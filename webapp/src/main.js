@@ -12,6 +12,8 @@ import store from './store'
 
 Vue.use(Vuetify)
 
+const vuetifyOptions = { }
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -21,6 +23,7 @@ new Vue({
   store,
   template: '<App/>',
   components: { App },
+  vuetify: new Vuetify(vuetifyOptions),
   beforeCreate() {
     this.$store.dispatch('init');
 	}

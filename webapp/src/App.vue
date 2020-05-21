@@ -1,5 +1,47 @@
 <template>
-	<v-app id="inspire">
+	<div>
+    <v-app-bar
+      color="deep-purple accent-4"
+      dense
+      dark
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>GTPD Flyright</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-menu
+        left
+        bottom
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="n in 5"
+            :key="n"
+            @click="() => {}"
+          >
+            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+  </div>
+	<!-- <v-app id="inspire">
 		<v-toolbar primary fixed :flat = "is_flat" :color="toolbar_color"
 		>
 			<v-toolbar-title style="margin-right:20px;">
@@ -12,7 +54,6 @@
 			</v-toolbar-title>
 			<v-toolbar-items class="hidden-xs-only">
 				<v-btn
-					flat
 					v-for="item in menuItems"
 					:key="item.title"
 					:to="item.path">
@@ -20,7 +61,6 @@
 				</v-btn>
 				
 				<v-btn
-					flat
 					v-for="(department, index) in departments"
 					:key="index"
 					@click="toDepartment(department)">
@@ -62,7 +102,6 @@
         style="z-index:9999;background-color:#ffffff"
         >
           <v-btn
-          flat
           color="primary"
           style="z-index:9999;background-color:#ffffff"
           @click="read_all_notifications">
@@ -93,7 +132,6 @@
 			<v-toolbar-items class="hidden-xs-and-down" v-if="!logged_in">
 				<v-btn
 				style="color:white;"
-				flat
 				to="/login"
 				>
 					<v-icon style="margin-right:5px">lock_outline</v-icon>
@@ -114,9 +152,9 @@
 			class="hidden-xs-and-down"
 		>
 			<span style="color:black"> {{ text }} </span>
-			<v-btn flat color="secondary" @click.native="snackbar = false">Close</v-btn>
+			<v-btn color="secondary" @click.native="snackbar = false">Close</v-btn>
 		</v-snackbar>
-	</v-app>
+	</v-app> -->
 </template>
 
 <script>
@@ -125,8 +163,9 @@
 	import VueAxios from 'vue-axios'
 	import router from '@/router'
 	import API from './mixins/API.js'
-  import Vuetify from 'vuetify'
-  import NotificationListItem from '@/components/NotificationListItem';
+	import Vuetify from 'vuetify'
+	import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
+  	import NotificationListItem from '@/components/NotificationListItem';
 
 	Vue.use(VueAxios, axios)
 	Vue.use(Vuetify, {
@@ -134,7 +173,8 @@
 			primary: '#04274A',
 			secondary: '#E5B43D',
 			accent: '#8c9eff',
-			error: '#b71c1c'
+			error: '#b71c1c',
+			dark: '#000000'
 		}
 	})
 
@@ -282,23 +322,23 @@
 	}
 </script>
 
-<style lang="stylus">
-// <style>
-	@import './stylus/main'
-	@require '../../node_modules/vuetify/src/stylus/settings/_colors'
-	@import url("https://fonts.googleapis.com/css?family=Barlow")
-	@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+// <style lang="stylus">
+<style>
+	// @import './stylus/main'
+	// @require '../../node_modules/vuetify/src/stylus/settings/_colors'
+	// @import url("https://fonts.googleapis.com/css?family=Barlow")
+	// @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
 
-	$theme := {
-		primary: $red.darken-2
-		accent: $red.accent-2
-		secondary: $grey.lighten-1
-		info: $blue.lighten-1
-		warning: $amber.darken-2
-		error: $red.accent-4
-		success: $green.lighten-2
-	}
+	// $theme := {
+	// 	primary: $red.darken-2
+	// 	accent: $red.accent-2
+	// 	secondary: $grey.lighten-1
+	// 	info: $blue.lighten-1
+	// 	warning: $amber.darken-2
+	// 	error: $red.accent-4
+	// 	success: $green.lighten-2
+	// }
 
 	body {
 		margin: 0;
