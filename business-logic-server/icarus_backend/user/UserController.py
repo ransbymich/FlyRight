@@ -1,13 +1,7 @@
-from django.contrib.auth import authenticate
-from users.tokens import account_activation_token
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from users.models import IcarusUser as User
+
 from icarus_backend.pilot.PilotModel import Pilot
 from icarus_backend.user.tasks import send_verification_email
-from django.template.loader import render_to_string
-
-import smtplib
 
 
 class UserController:
@@ -64,13 +58,13 @@ class UserController:
         response_dict['user'] = user.as_dict()
         pilot = Pilot.objects.filter(user=user).first()
         if pilot:
-            response_dict['pilot'] = pilot.as_dict() # Also provide the information about this user as a pilot
-        return 200, response_dict # Give them the information
+            response_dict['pilot'] = pilot.as_dict()  # Also provide the information about this user as a pilot
+        return 200, response_dict  # Give them the information
 
     @staticmethod
     def update(id, parsed_json):
         # TODO is there a better way of doing this?
-        user = User.objects.filter(id=id).first() # Find the user by pk
+        user = User.objects.filter(id=id).first()  # Find the user by pk
         # Update any of the fields, if they have been provided in the request.
         if 'email' in parsed_json and user.email != parsed_json['email']:
             user.email = parsed_json['email']

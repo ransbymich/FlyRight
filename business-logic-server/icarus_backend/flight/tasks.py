@@ -1,9 +1,11 @@
 import os
+
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from users.tokens import account_activation_token
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from users.tokens import account_activation_token
+
 from icarus_backend.celery import app
 
 

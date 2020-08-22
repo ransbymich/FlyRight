@@ -1,8 +1,7 @@
-from schema import And, Optional
+from schema import And
 
 
 class SchedulingRuleSchemas:
-
     register = {
         "flight_id": And(str),
         "frequency": And(str),

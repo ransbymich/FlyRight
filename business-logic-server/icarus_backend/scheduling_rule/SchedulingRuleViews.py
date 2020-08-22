@@ -1,11 +1,12 @@
-from django.http import HttpResponse
 import json
+
+from django.http import HttpResponse
 from oauth2_provider.decorators import protected_resource
 from rest_framework.decorators import api_view
 
 from icarus_backend.utils import validate_body
-from .SchedulingRuleData import SchedulingRuleData
 from .SchedulingRuleController import SchedulingRuleController
+from .SchedulingRuleData import SchedulingRuleData
 from .SchedulingRuleSchemas import SchedulingRuleSchemas
 
 

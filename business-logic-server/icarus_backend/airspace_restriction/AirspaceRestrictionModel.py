@@ -1,6 +1,5 @@
 from django.contrib.gis.db import models
 from users.models import IcarusUser as User
-from django.utils import timezone
 
 
 class AirspaceRestriction(models.Model):

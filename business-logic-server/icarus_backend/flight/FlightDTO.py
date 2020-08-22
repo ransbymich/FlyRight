@@ -1,9 +1,11 @@
+from django.contrib.gis.geos import Polygon
+from users.models import IcarusUser as User
+
+from icarus_backend.clearance.ClearanceModel import Clearance
+from icarus_backend.utils import set_lat_range
 from .FlightData import FlightData
 from .FlightModel import Flight
-from users.models import IcarusUser as User
-from icarus_backend.clearance.ClearanceModel import Clearance
-from django.contrib.gis.geos import Polygon
-from icarus_backend.utils import set_lat_range
+
 
 # TODO what does DTO mean?
 class FlightDTO:
@@ -25,4 +27,3 @@ class FlightDTO:
         return FlightData(id=flight.id, title=flight.title, type=flight.type, description=flight.description,
                           starts_at=flight.starts_at, ends_at=flight.ends_at,
                           coordinates=flight_dict['area']['features'][0]['geometry']['coordinates'])
-

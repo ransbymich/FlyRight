@@ -1,11 +1,12 @@
-from datetime import timedelta
 import json
+from datetime import timedelta
 
-from django.utils import timezone
-from django.urls import reverse
 from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
 from oauth2_provider.models import get_application_model, get_access_token_model
 from users.models import IcarusUser as User
+
 from icarus_backend.pilot.PilotModel import Pilot
 
 Application = get_application_model()
@@ -25,8 +26,8 @@ class UserViewTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='user1',
-                                        email='e@mail.com',
-                                        password='12345')
+                                             email='e@mail.com',
+                                             password='12345')
         self.oauth_app = self._create_application("app foo_user 1", self.user)
 
         self.access_token = AccessToken.objects.create(

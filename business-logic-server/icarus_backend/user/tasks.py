@@ -1,11 +1,10 @@
-import os
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from users.tokens import account_activation_token
+import smtplib
+
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from users.tokens import account_activation_token
+
 from icarus_backend.celery import app
-import smtplib
 
 
 @app.task
@@ -44,6 +43,7 @@ Flyright Team.<br>
         print("Successfully sent email")
     except:
         print("Error: unable to send email")
+
 
 # TODO How does this work?
 @app.task

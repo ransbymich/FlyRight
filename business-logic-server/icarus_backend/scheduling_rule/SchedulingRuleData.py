@@ -1,6 +1,3 @@
-import json
-
-
 class SchedulingRuleData:
 
     def __init__(self, frequency, parameters, ends_at):

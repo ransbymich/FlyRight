@@ -1,6 +1,3 @@
-from users.models import IcarusUser as User
-
-
 class NotificationData:
 
     def __init__(self, notification_id, actor_object_id, actor_object_username, recipient_id, verb, level,

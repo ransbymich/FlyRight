@@ -1,14 +1,15 @@
-from django.http import HttpResponse
-from django.utils.timezone import is_aware
-from django.utils.dateparse import parse_datetime
+import json
+
 from django.contrib.gis.geos import Polygon
+from django.http import HttpResponse
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import is_aware
 from oauth2_provider.decorators import protected_resource
-from .AirspaceRestrictionModel import AirspaceRestriction
-from icarus_backend.asset.AssetModel import Asset
-import json, uuid
 from rest_framework.decorators import api_view
+
 from icarus_backend.airspace_restriction.AirSpaceRestrictionSchemas import add_airspace_restriction_schema
 from icarus_backend.utils import validate_body
+from .AirspaceRestrictionModel import AirspaceRestriction
 
 
 @protected_resource()

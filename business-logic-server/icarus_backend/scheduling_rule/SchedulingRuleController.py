@@ -1,10 +1,12 @@
-from .SchedulingRuleData import SchedulingRuleData
-from .SchedulingRuleDTO import SchedulingRuleDTO
-from .SchedulingRuleModel import SchedulingRule
-from users.models import IcarusUser as User
-from icarus_backend.flight.FlightModel import Flight
-from .tasks import check_scheduling_rules
 import json
+
+from users.models import IcarusUser as User
+
+from icarus_backend.flight.FlightModel import Flight
+from .SchedulingRuleDTO import SchedulingRuleDTO
+from .SchedulingRuleData import SchedulingRuleData
+from .SchedulingRuleModel import SchedulingRule
+
 
 class SchedulingRuleController:
 
@@ -61,4 +63,3 @@ class SchedulingRuleController:
         scheduling_rules = SchedulingRule.objects.filter(flight__created_by=user).all()
         response_dict = [rule.as_dict() for rule in scheduling_rules]
         return 200, response_dict
-

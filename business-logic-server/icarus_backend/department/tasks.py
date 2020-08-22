@@ -1,7 +1,9 @@
 import os
-from icarus_backend.celery import app
+
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+
+from icarus_backend.celery import app
 
 
 class DepartmentTasks:
@@ -19,4 +21,3 @@ class DepartmentTasks:
             mail_subject, message, os.environ.get('EMAIL_ADDRESS', 'DEV'), to=[email]
         )
         email.send()
-

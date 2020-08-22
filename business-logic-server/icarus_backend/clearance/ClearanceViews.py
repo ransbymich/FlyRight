@@ -1,11 +1,13 @@
-from .ClearanceModel import Clearance
-from django.utils import timezone
-from django.http import HttpResponse
-from django.core.serializers.json import DjangoJSONEncoder
 import json
 import uuid
+
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse
+from django.utils import timezone
 from oauth2_provider.decorators import protected_resource
 from rest_framework.decorators import api_view
+
+from .ClearanceModel import Clearance
 
 
 @protected_resource()

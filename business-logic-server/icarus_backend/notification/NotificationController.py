@@ -1,6 +1,7 @@
-from users.models import IcarusUser as User
-from .NotificationDTO import NotificationDTO
 from notifications.models import Notification
+from users.models import IcarusUser as User
+
+from .NotificationDTO import NotificationDTO
 
 
 class NotificationController:

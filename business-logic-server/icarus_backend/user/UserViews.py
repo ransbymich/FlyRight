@@ -1,19 +1,21 @@
-from django.template.response import TemplateResponse
-from django.shortcuts import redirect
-from rest_framework.decorators import api_view
-from django.http import HttpResponse
 import json
-from users.models import IcarusUser as User
-from icarus_backend.pilot.PilotModel import Pilot
-from users.tokens import account_activation_token
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.template.response import TemplateResponse
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
-from icarus_backend.user.tasks import send_verification_email, reset_password_email
-from django.contrib.sites.shortcuts import get_current_site
-from icarus_backend.utils import validate_body
 from oauth2_provider.decorators import protected_resource
-from .userViewSchemas import *
+from rest_framework.decorators import api_view
+from users.models import IcarusUser as User
+from users.tokens import account_activation_token
+
+from icarus_backend.pilot.PilotModel import Pilot
 from icarus_backend.user.UserController import UserController
+from icarus_backend.user.tasks import reset_password_email
+from icarus_backend.utils import validate_body
+from .userViewSchemas import *
 
 
 @api_view(['POST'])
@@ -77,7 +79,7 @@ def icarus_is_logged_in(request):  # Checks to see if there's the correct tokens
 
 
 @api_view(['GET'])
-def activate(request, uidb64, token): # Activate the user, they got the link from their verification email
+def activate(request, uidb64, token):  # Activate the user, they got the link from their verification email
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=int(uid))
@@ -94,7 +96,7 @@ def activate(request, uidb64, token): # Activate the user, they got the link fro
 
 
 @api_view(['GET'])
-def forgot_password(request): # Find the user by email address, send them the appropriate link if the user exists.
+def forgot_password(request):  # Find the user by email address, send them the appropriate link if the user exists.
     email = request.query_params.get('email')
     user = User.objects.filter(email=email).first()
     if user:
@@ -106,7 +108,7 @@ def forgot_password(request): # Find the user by email address, send them the ap
 
 
 @api_view(['GET', 'POST'])
-def reset_password_token(request, uidb64, token): # TODO Understand how this works
+def reset_password_token(request, uidb64, token):  # TODO Understand how this works
     if request.method == 'GET':
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -142,7 +144,7 @@ def reset_password_token(request, uidb64, token): # TODO Understand how this wor
 @protected_resource()
 @api_view(['POST'])
 @validate_body(change_password_schema)
-def change_password(request): # Change the password of the user
+def change_password(request):  # Change the password of the user
     b = request.data
     status, message = UserController.change_password(request.user.email, b['old_password'],
                                                      b['new_password'])

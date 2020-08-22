@@ -2,7 +2,6 @@ import json
 
 from .SchedulingRuleData import SchedulingRuleData
 from .SchedulingRuleModel import SchedulingRule
-from icarus_backend.flight.FlightModel import Flight
 
 
 class SchedulingRuleDTO:

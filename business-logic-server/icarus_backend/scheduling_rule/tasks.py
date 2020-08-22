@@ -1,15 +1,14 @@
-from icarus_backend.celery import app
-from icarus_backend.gateways.SlackBotGateway import post_health
-from .SchedulingRuleModel import SchedulingRule
-from .SchedulingRuleDTO import SchedulingRuleDTO
-from icarus_backend.flight.FlightModel import Flight
-from icarus_backend.flight.FlightData import FlightData
-from icarus_backend.flight.FlightDTO import FlightDTO
-from icarus_backend.flight.FlightController import FlightController
-from django.utils import timezone
 import datetime
-import json
+
 import pytz
+from django.utils import timezone
+
+from icarus_backend.celery import app
+from icarus_backend.flight.FlightController import FlightController
+from icarus_backend.flight.FlightDTO import FlightDTO
+from icarus_backend.flight.FlightModel import Flight
+from .SchedulingRuleDTO import SchedulingRuleDTO
+from .SchedulingRuleModel import SchedulingRule
 
 
 @app.task
@@ -28,7 +27,7 @@ def check_scheduling_rules():
         for day in scheduling_rule_data.parameters['days']:
 
             day_int = day_to_int(day)
-            start_date = today - datetime.timedelta(days=-today.weekday()-1+day_int, weeks=1)
+            start_date = today - datetime.timedelta(days=-today.weekday() - 1 + day_int, weeks=1)
             start_datetime = datetime.datetime.combine(start_date, start_time)
             start_datetime = timezone.make_aware(start_datetime, timezone=pytz.timezone('UTC'))
             end_datetime = start_datetime + duration

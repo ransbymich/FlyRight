@@ -1,7 +1,8 @@
-from schema import Schema, SchemaError
-import json
-from django.http import HttpResponse
 import base64
+import json
+
+from django.http import HttpResponse
+from schema import Schema, SchemaError
 
 
 def get_basic_auth_header(user, password):
@@ -31,7 +32,9 @@ def validate_body(body_schema):
                 return HttpResponse(response_json, content_type="application/json", status=401)
             result = f(*args, **kwargs)
             return result
+
         return wrapper
+
     return real_decorator
 
 

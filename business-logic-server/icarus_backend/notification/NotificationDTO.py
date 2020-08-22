@@ -1,5 +1,6 @@
-from .NotificationData import NotificationData
 from users.models import IcarusUser as User
+
+from .NotificationData import NotificationData
 
 
 class NotificationDTO:

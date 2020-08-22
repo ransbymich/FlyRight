@@ -1,61 +1,63 @@
+import json
+from datetime import timedelta
+
+from django.contrib.gis.geos import Polygon
 from django.test import TestCase
 from django.urls import reverse
-from users.models import IcarusUser as User
-from django.contrib.gis.geos import Polygon
-from django.utils.dateparse import parse_datetime
-import json
-from icarus_backend.flight.FlightModel import Flight
-from datetime import timedelta
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from users.models import IcarusUser as User
+
+from icarus_backend.flight.FlightModel import Flight
 
 area = {
     "type": "FeatureCollection",
     "features": [
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates":
-            [
-              [
-                -78.046875,
-                13.581920900545844
-              ],
-              [
-                -73.47656249999999,
-                -3.162455530237848
-              ],
-              [
-                -60.8203125,
-                14.26438308756265
-              ],
-              [
-                -78.046875,
-                13.581920900545844
-              ]
-            ]
-        },
-        "properties": {}
-      }
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates":
+                    [
+                        [
+                            -78.046875,
+                            13.581920900545844
+                        ],
+                        [
+                            -73.47656249999999,
+                            -3.162455530237848
+                        ],
+                        [
+                            -60.8203125,
+                            14.26438308756265
+                        ],
+                        [
+                            -78.046875,
+                            13.581920900545844
+                        ]
+                    ]
+            },
+            "properties": {}
+        }
     ]
-  }
+}
 
 register_info = {
-  "title": "Venezuela",
-  "area": area,
-  "description": "testing minimap",
-  "starts_at": "2011-10-12T11:45:00+05:00",
-  "ends_at": "2011-11-12T11:45:00+05:00",
-  "type": "commercial"
+    "title": "Venezuela",
+    "area": area,
+    "description": "testing minimap",
+    "starts_at": "2011-10-12T11:45:00+05:00",
+    "ends_at": "2011-11-12T11:45:00+05:00",
+    "type": "commercial"
 }
 
 register_info_2 = {
-  "title": "Columbia",
-  "area": area,
-  "description": "Reconnaissance",
-  "starts_at": "2016-10-12T11:45:00+05:00",
-  "ends_at": "2016-11-12T11:45:00+05:00",
-  "type": "commercial"
+    "title": "Columbia",
+    "area": area,
+    "description": "Reconnaissance",
+    "starts_at": "2016-10-12T11:45:00+05:00",
+    "ends_at": "2016-11-12T11:45:00+05:00",
+    "type": "commercial"
 }
 
 login_info = {

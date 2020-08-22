@@ -1,8 +1,8 @@
-
-from django.urls import path
 from django.conf.urls import url
+from django.urls import path
 
 from . import UserViews
+
 # Defines the endpoints available on example.com/user/
 urlpatterns = [
     path('get_current/', UserViews.icarus_get_current_user, name='get current user'),

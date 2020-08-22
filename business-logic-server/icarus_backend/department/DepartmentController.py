@@ -1,12 +1,14 @@
 import datetime
+
 import numpy as np
-from icarus_backend.flight.FlightModel import Flight
-from users.models import IcarusUser as User
-from icarus_backend.department.DepartmentModel import Department
-from icarus_backend.department.tasks import DepartmentTasks
-from django.utils import timezone
 from django.contrib.gis.geos import Polygon
 from django.db.models import Q
+from django.utils import timezone
+from users.models import IcarusUser as User
+
+from icarus_backend.department.DepartmentModel import Department
+from icarus_backend.department.tasks import DepartmentTasks
+from icarus_backend.flight.FlightModel import Flight
 
 
 class DepartmentController:
@@ -16,7 +18,7 @@ class DepartmentController:
         numpy_area = np.asarray(area)
         if not (len(numpy_area.shape) == 3 and numpy_area.shape[2] == 2):
             return 400, {'message': 'Area is not properly formatted. Must have shape (-1, -1, 2).'}
-        area = [[x[1],x[0]] for x in area[0]]
+        area = [[x[1], x[0]] for x in area[0]]
         area = Polygon(area)
         department = Department.objects.filter(name=name).first()
         if department:
@@ -111,15 +113,16 @@ class DepartmentController:
 
     @staticmethod
     def flight_histogram(department_id, start_day, end_day, user) -> (int, dict):
-        number_of_days = (end_day-start_day).days + 1
+        number_of_days = (end_day - start_day).days + 1
         histogram = []
         department = Department.objects.filter(id=department_id).first()
         if not department:
             return 400, {'message': 'No department with that id exists.'}
         for index in range(0, number_of_days):
             starts_at = start_day + datetime.timedelta(days=index)
-            ends_at = start_day + datetime.timedelta(days=index+1)
-            num_flights = Flight.objects.filter(area__intersects=department.area, starts_at__gt=starts_at, ends_at__lt=ends_at).count()
+            ends_at = start_day + datetime.timedelta(days=index + 1)
+            num_flights = Flight.objects.filter(area__intersects=department.area, starts_at__gt=starts_at,
+                                                ends_at__lt=ends_at).count()
             histogram += [num_flights]
         return 200, histogram
 
@@ -127,7 +130,7 @@ class DepartmentController:
     def message_pilots(department_name, message):
         _now = timezone.now()
         department = Department.objects.filter(name=department_name).first()
-        local_pilots = User.objects.filter(flight__area__intersects=department.area, flight__ends_at__gt=_now)\
+        local_pilots = User.objects.filter(flight__area__intersects=department.area, flight__ends_at__gt=_now) \
             .distinct()
         for pilot in local_pilots:
             DepartmentTasks.email_jurisdiction.delay(pilot.username, pilot.email, department.name, message)

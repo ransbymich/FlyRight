@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from django.utils import timezone
 from users.models import IcarusUser as User
+
 from icarus_backend.clearance.ClearanceModel import Clearance
 from icarus_backend.scheduling_rule.SchedulingRuleModel import SchedulingRule
 
@@ -23,6 +24,7 @@ class Flight(models.Model):
     scheduling_rule = models.ForeignKey(SchedulingRule,
                                         on_delete=models.SET_NULL,
                                         null=True)
+
     # clearance
 
     def as_geojson(self):
@@ -52,6 +54,6 @@ class Flight(models.Model):
             "clearance": self.clearance.as_dict(),
             "type": self.type,
             "scheduling": (self.scheduling_rule.as_dict() if self.scheduling_rule else {
-                'frequency': 'Does Not Repeat', 'parameters': {'days': [],},
+                'frequency': 'Does Not Repeat', 'parameters': {'days': [], },
             }),
         }

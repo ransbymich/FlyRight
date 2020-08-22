@@ -1,8 +1,10 @@
+import json
+
 from django.test import TestCase
 from django.urls import reverse
 from users.models import IcarusUser as User
+
 from icarus_backend.drone.DroneModel import Drone
-import json
 
 login_info = {
     'username': 'user1',
@@ -10,23 +12,24 @@ login_info = {
 }
 
 ri = {
-      "description" : "fixed-wing, 4\" blades",
-      "manufacturer" : "DJI",
-      "type": "quadrotor",
-      "color": "Green",
-      "faa_registration_number": "ABC123"
-    }
+    "description": "fixed-wing, 4\" blades",
+    "manufacturer": "DJI",
+    "type": "quadrotor",
+    "color": "Green",
+    "faa_registration_number": "ABC123"
+}
 
 
 class DroneViewTest(TestCase):
 
     def setUp(self):
         user = User.objects.create_user(username='user1',
-                                 email='e@mail.com',
-                                 password='12345')
+                                        email='e@mail.com',
+                                        password='12345')
 
         Drone.objects.create(id=1, description=ri['description'], manufacturer=ri['manufacturer'],
-                             type=ri['type'], color=ri['color'], faa_registration_number=ri['faa_registration_number'], owner=user)
+                             type=ri['type'], color=ri['color'], faa_registration_number=ri['faa_registration_number'],
+                             owner=user)
 
     def test_get_user_drones(self):
         response = self.client.post(reverse('icarus login'), json.dumps(login_info),
@@ -46,7 +49,7 @@ class DroneViewTest(TestCase):
                              type=ri['type'], color=ri['color'], owner=user)
         drones = Drone.objects.filter(owner=user)
         self.assertEqual(len(drones), 2)
-        delete_drone_json = { 'drone_id': '2'}
+        delete_drone_json = {'drone_id': '2'}
         response = self.client.post(reverse('delete drones'), json.dumps(delete_drone_json),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 200)

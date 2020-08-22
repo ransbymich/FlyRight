@@ -1,13 +1,14 @@
-from rest_framework.decorators import api_view
-from django.http import HttpResponse
 import json
-from django.contrib.sites.shortcuts import get_current_site
-from icarus_backend.utils import validate_body
-from oauth2_provider.decorators import protected_resource
 
-from .pilotViewSchemas import register_pilot_schema, update_pilot_info_schema
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
+from oauth2_provider.decorators import protected_resource
+from rest_framework.decorators import api_view
+
+from icarus_backend.utils import validate_body
 from .PilotController import PilotController
 from .PilotData import PilotRegistrationData
+from .pilotViewSchemas import register_pilot_schema, update_pilot_info_schema
 
 
 @api_view(['POST'])
@@ -33,7 +34,7 @@ def get_pilot_data(request):
 @api_view(['POST'])
 @validate_body(update_pilot_info_schema)
 def update_pilot_info(request):
-        parsed_json = request.data
-        status, response_data = PilotController.update_info(request.user.id, parsed_json)
-        response_json = json.dumps(response_data)
-        return HttpResponse(response_json, content_type="application/json", status=status)
+    parsed_json = request.data
+    status, response_data = PilotController.update_info(request.user.id, parsed_json)
+    response_json = json.dumps(response_data)
+    return HttpResponse(response_json, content_type="application/json", status=status)

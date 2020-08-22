@@ -1,7 +1,8 @@
-from icarus_backend.user.UserController import UserController
-from icarus_backend.pilot.PilotModel import Pilot
 from users.models import IcarusUser as User
+
 from icarus_backend.pilot.PilotData import PilotRegistrationData
+from icarus_backend.pilot.PilotModel import Pilot
+from icarus_backend.user.UserController import UserController
 
 
 class PilotController:
@@ -20,7 +21,7 @@ class PilotController:
         return status, message
 
     @staticmethod
-    def get_pilot_data(id) -> (int, dict): # Get information about an existing pilot, return it as JSON
+    def get_pilot_data(id) -> (int, dict):  # Get information about an existing pilot, return it as JSON
         pilot = Pilot.objects.filter(user=id).first()
         if not pilot:
             return 400, {'message': 'No pilot with this id exists.'}

@@ -1,14 +1,16 @@
-from django.http import HttpResponse
 import json
-from .FlightModel import Flight
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
 from django.utils import timezone
 from oauth2_provider.decorators import protected_resource
-from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.decorators import api_view
+
 from icarus_backend.flight.FlightViewsSchema import FlightViewSchemas
 from icarus_backend.utils import validate_body
 from .FlightController import FlightController
 from .FlightData import FlightData
+from .FlightModel import Flight
 
 
 @protected_resource()

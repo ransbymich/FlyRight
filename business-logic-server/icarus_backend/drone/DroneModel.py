@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
-from users.models import IcarusUser as User
 from django.utils import timezone
+from users.models import IcarusUser as User
 
 
 class Drone(models.Model):

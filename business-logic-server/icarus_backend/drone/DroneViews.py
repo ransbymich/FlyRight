@@ -1,9 +1,12 @@
+import json
+import uuid
+
 from django.http import HttpResponse
 from oauth2_provider.decorators import protected_resource
-from .DroneModel import Drone
-from icarus_backend.asset.AssetModel import Asset
-import json, uuid
 from rest_framework.decorators import api_view
+
+from icarus_backend.asset.AssetModel import Asset
+from .DroneModel import Drone
 
 
 @protected_resource()

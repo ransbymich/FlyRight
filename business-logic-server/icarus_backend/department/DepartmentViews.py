@@ -1,13 +1,14 @@
-from django.http import HttpResponse
-from rest_framework.decorators import api_view
-from oauth2_provider.decorators import protected_resource
 import json
+
+from django.http import HttpResponse
 from django.utils.dateparse import parse_datetime
+from oauth2_provider.decorators import protected_resource
+from rest_framework.decorators import api_view
 from users.models import IcarusUser as User
-from icarus_backend.department.DepartmentSchemas import DepartmentSchemas
-from icarus_backend.utils import validate_body
 
 from icarus_backend.department.DepartmentController import DepartmentController
+from icarus_backend.department.DepartmentSchemas import DepartmentSchemas
+from icarus_backend.utils import validate_body
 
 
 @protected_resource()
@@ -172,4 +173,3 @@ def delete(request):
     status, response_data = DepartmentController.delete(id)
     response_json = json.dumps(response_data)
     return HttpResponse(response_json, content_type="application/json", status=status)
-

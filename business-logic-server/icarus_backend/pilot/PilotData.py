@@ -1,4 +1,3 @@
-
 class PilotRegistrationData:
 
     def __init__(self, username, email, password, remote_pilot_certificate_number,
@@ -21,5 +20,4 @@ class PilotRegistrationData:
         first_name = json_object['first_name']
         last_name = json_object['last_name']
         return PilotRegistrationData(username, email, password, remote_pilot_certificate_number,
-                mobile_phone_number, first_name, last_name)
-
+                                     mobile_phone_number, first_name, last_name)

@@ -1,4 +1,4 @@
-from schema import And, Optional
+from schema import And
 
 add_airspace_restriction_schema = {
     "is_constant": And(bool),

@@ -1,8 +1,10 @@
+import json
+
+from django.http import HttpResponse
 from oauth2_provider.decorators import protected_resource
 from rest_framework.decorators import api_view
+
 from .NotificationController import NotificationController
-from django.http import HttpResponse
-import json
 
 
 @protected_resource()

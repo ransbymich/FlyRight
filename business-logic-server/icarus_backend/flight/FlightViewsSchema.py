@@ -2,7 +2,6 @@ from schema import And, Optional
 
 
 class FlightViewSchemas:
-
     get_flights_schema = {
         "filters": And(list),
     }

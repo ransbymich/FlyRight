@@ -8,10 +8,11 @@ class Department(models.Model):
     watchCommanders = models.ManyToManyField(User, related_name="watchcom_profile")
     area = models.PolygonField(default='POLYGON EMPTY')
     name = models.TextField(unique=True)
+
     # clearance
 
     def as_geojson(self):
-        coords = [[x[0],x[1]] for x in self.area[0].coords]
+        coords = [[x[0], x[1]] for x in self.area[0].coords]
         return {
             "type": "FeatureCollection",
             "features": [

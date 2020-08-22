@@ -1,64 +1,65 @@
+import json
+from datetime import timedelta
+
+from django.contrib.gis.geos import Polygon
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.gis.geos import Polygon
+from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from users.models import IcarusUser as User
-from icarus_backend.flight.FlightModel import Flight
-from icarus_backend.drone.DroneModel import Drone
-from datetime import timedelta
-from django.utils import timezone
-from icarus_backend.clearance.ClearanceModel import Clearance
 
-import json
+from icarus_backend.clearance.ClearanceModel import Clearance
+from icarus_backend.drone.DroneModel import Drone
+from icarus_backend.flight.FlightModel import Flight
 
 area = {
     "type": "FeatureCollection",
     "features": [
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates":
-            [
-              [
-                -78.046875,
-                13.581920900545844
-              ],
-              [
-                -73.47656249999999,
-                -3.162455530237848
-              ],
-              [
-                -60.8203125,
-                14.26438308756265
-              ],
-              [
-                -78.046875,
-                13.581920900545844
-              ]
-            ]
-        },
-        "properties": {}
-      }
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates":
+                    [
+                        [
+                            -78.046875,
+                            13.581920900545844
+                        ],
+                        [
+                            -73.47656249999999,
+                            -3.162455530237848
+                        ],
+                        [
+                            -60.8203125,
+                            14.26438308756265
+                        ],
+                        [
+                            -78.046875,
+                            13.581920900545844
+                        ]
+                    ]
+            },
+            "properties": {}
+        }
     ]
-  }
+}
 
 register_info = {
-  "title": "Venezuela",
-  "area": area,
-  "description": "testing minimap",
-  "starts_at": "2011-10-12T11:45:00+05:00",
-  "ends_at": "2011-11-12T11:45:00+05:00",
-  "type": "commercial"
+    "title": "Venezuela",
+    "area": area,
+    "description": "testing minimap",
+    "starts_at": "2011-10-12T11:45:00+05:00",
+    "ends_at": "2011-11-12T11:45:00+05:00",
+    "type": "commercial"
 }
 
 register_info_2 = {
-  "title": "Columbia",
-  "area": area,
-  "description": "Reconnaissance",
-  "starts_at": "2016-10-12T11:45:00+05:00",
-  "ends_at": "2016-11-12T11:45:00+05:00",
-  "type": "commercial"
+    "title": "Columbia",
+    "area": area,
+    "description": "Reconnaissance",
+    "starts_at": "2016-10-12T11:45:00+05:00",
+    "ends_at": "2016-11-12T11:45:00+05:00",
+    "type": "commercial"
 }
 
 login_info = {
@@ -71,15 +72,17 @@ class MissionViewTest(TestCase):
 
     def setUp(self):
         user = User.objects.create_user(username='user1',
-                                 email='e@mail.com',
-                                 password='12345')
+                                        email='e@mail.com',
+                                        password='12345')
         area_polygon = Polygon(area['features'][0]['geometry']['coordinates'])
         starts_at = parse_datetime(register_info['starts_at'])
         ends_at = parse_datetime(register_info['ends_at'])
-        Clearance.objects.create(clearance_id=0, created_by = 'ray', state='pending', message ='hello', date = "2016-10-12T11:45:00+05:00")
+        Clearance.objects.create(clearance_id=0, created_by='ray', state='pending', message='hello',
+                                 date="2016-10-12T11:45:00+05:00")
         Flight.objects.create(id=1, title=register_info['title'], area=area_polygon,
                               description=register_info['description'], starts_at=starts_at,
-                              ends_at=ends_at, type=register_info['type'], created_by=user, clearance=Clearance.objects.get(clearance_id=0))
+                              ends_at=ends_at, type=register_info['type'], created_by=user,
+                              clearance=Clearance.objects.get(clearance_id=0))
 
     def test_register_mission(self):
         response = self.client.post(reverse('register mission'), json.dumps(register_info_2),
@@ -146,7 +149,8 @@ class MissionViewTest(TestCase):
         response = self.client.post(reverse('icarus login'), json.dumps(login_info),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        edit_mission_details_json = {'mission_id': '1', 'title': 'South Georgia', 'description': "Looking for someone in South Georgia"}
+        edit_mission_details_json = {'mission_id': '1', 'title': 'South Georgia',
+                                     'description': "Looking for someone in South Georgia"}
         response = self.client.post(reverse('edit mission details'), json.dumps(edit_mission_details_json),
                                     content_type='application/json')
         mission = Flight.objects.filter(pk=1).first()
@@ -158,8 +162,9 @@ class MissionViewTest(TestCase):
         response = self.client.post(reverse('icarus login'), json.dumps(login_info),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        edit_request = {'mission_id':'1', 'created_by':'bob', 'state':'not pending', 'message':'bye bye'}
-        response = self.client.post(reverse('edit clearance'), json.dumps(edit_request), content_type='application/json')
+        edit_request = {'mission_id': '1', 'created_by': 'bob', 'state': 'not pending', 'message': 'bye bye'}
+        response = self.client.post(reverse('edit clearance'), json.dumps(edit_request),
+                                    content_type='application/json')
         clearance = Clearance.objects.get(clearance_id='0')
         self.assertEqual(clearance.created_by, 'bob')
         self.assertEqual(clearance.state, 'not pending')
@@ -178,8 +183,7 @@ class MissionViewTest(TestCase):
         response = self.client.post(reverse('icarus login'), json.dumps(login_info),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        add_drone_to_mission = { 'drone_id': '1', 'mission_id': '1'}
+        add_drone_to_mission = {'drone_id': '1', 'mission_id': '1'}
         response = self.client.post(reverse('add drone to mission'), json.dumps(add_drone_to_mission),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 200)
-

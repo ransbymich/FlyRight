@@ -1,4 +1,3 @@
-
 from corsheaders.models import AbstractCorsModel
 
 

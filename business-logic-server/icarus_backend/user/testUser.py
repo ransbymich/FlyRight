@@ -3,24 +3,22 @@ from datetime import timedelta
 
 from django.test import TestCase
 from django.urls import reverse
-
-from users.models import IcarusUser as User
-from oauth2_provider.models import get_application_model, get_access_token_model
-from urllib.parse import urlencode
 from django.utils import timezone
+from oauth2_provider.models import get_application_model, get_access_token_model
+from users.models import IcarusUser as User
 
 login_info = {
-        'username': 'user1',
-        'password': '12345'
-    }
+    'username': 'user1',
+    'password': '12345'
+}
 
 register_info = {
-        'username': 'user2',
-        'password': '12345',
-        'email': "e2@mail.com",
-        'first_name': 'Sam',
-        'last_name': 'Crane'
-    }
+    'username': 'user2',
+    'password': '12345',
+    'email': "e2@mail.com",
+    'first_name': 'Sam',
+    'last_name': 'Crane'
+}
 
 user_info = {
     'id': 3,
@@ -49,8 +47,8 @@ class UserViewTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='user1',
-                                        email='e@mail.com',
-                                        password='12345')
+                                             email='e@mail.com',
+                                             password='12345')
         self.oauth_app = self._create_application("app foo_user 1", self.user)
 
         self.access_token = AccessToken.objects.create(
@@ -89,7 +87,8 @@ class UserViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register(self):
-        response = self.client.post(reverse('icarus register user'), json.dumps(register_info), content_type='application/json')
+        response = self.client.post(reverse('icarus register user'), json.dumps(register_info),
+                                    content_type='application/json')
         self.assertEqual(response.status_code, 200)
         user = User.objects.filter(username="user2")
         self.assertTrue(user)

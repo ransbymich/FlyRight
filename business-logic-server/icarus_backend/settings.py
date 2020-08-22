@@ -12,20 +12,21 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import sys
-from django.utils.log import DEFAULT_LOGGING
+
 from celery.schedules import crontab
+from django.utils.log import DEFAULT_LOGGING
 
 LOGGING = DEFAULT_LOGGING
 
 LOGGING['handlers']['slack_admins'] = {
-  'level': 'ERROR',
-  'filters': ['require_debug_false'],
-  'class': 'slack_logger.SlackExceptionHandler',
+    'level': 'ERROR',
+    'filters': ['require_debug_false'],
+    'class': 'slack_logger.SlackExceptionHandler',
 }
 
 LOGGING['loggers']['django'] = {
-  'handlers': ['console', 'slack_admins'],
-  'level': 'INFO',
+    'handlers': ['console', 'slack_admins'],
+    'level': 'INFO',
 }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

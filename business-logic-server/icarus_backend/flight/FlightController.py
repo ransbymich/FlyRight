@@ -1,23 +1,24 @@
-from .tasks import clearance_update_email
-from .FlightData import FlightData
-from .FlightDTO import FlightDTO
 import uuid
-from django.utils.timezone import is_aware
-from django.contrib.gis.geos import Polygon
 
-from icarus_backend.clearance.ClearanceModel import Clearance
+from django.contrib.gis.geos import Polygon
+from django.db.models import Q
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import is_aware
+from notifications.signals import notify
 from users.models import IcarusUser as User
-from icarus_backend.drone.DroneModel import Drone
-from .FlightModel import Flight
+
 from icarus_backend.asset.AssetModel import Asset
+from icarus_backend.clearance.ClearanceModel import Clearance
 from icarus_backend.department.DepartmentController import DepartmentController
 from icarus_backend.department.DepartmentModel import Department
-from notifications.signals import notify
-from .tasks import new_flight_registered_email
-from django.utils.dateparse import parse_datetime
-from django.db.models import Q
-from icarus_backend.utils import set_lat_range
+from icarus_backend.drone.DroneModel import Drone
 from icarus_backend.settings import DEBUG
+from icarus_backend.utils import set_lat_range
+from .FlightDTO import FlightDTO
+from .FlightData import FlightData
+from .FlightModel import Flight
+from .tasks import clearance_update_email
+from .tasks import new_flight_registered_email
 
 
 class FlightController:
@@ -55,7 +56,8 @@ class FlightController:
             for watch_commanders in department.watchCommanders.all():
                 notify.send(user, recipient=watch_commanders, verb='registered a flight', action_object=new_flight)
                 if not DEBUG:
-                    new_flight_registered_email.delay(watch_commanders.username, watch_commanders.email, watch_commanders.id, domain)
+                    new_flight_registered_email.delay(watch_commanders.username, watch_commanders.email,
+                                                      watch_commanders.id, domain)
         # We made it!
         return 200, {'id': str(flight_data.id)}
 
@@ -135,11 +137,12 @@ class FlightController:
             for watch_commanders in department.watchCommanders.all():
                 notify.send(user, recipient=watch_commanders, verb='edited a flight', action_object=flight)
                 if not DEBUG:
-                    new_flight_registered_email.delay(watch_commanders.username, watch_commanders.email, watch_commanders.id, domain)
+                    new_flight_registered_email.delay(watch_commanders.username, watch_commanders.email,
+                                                      watch_commanders.id, domain)
         return 200, {'message': flight.id}
 
     @staticmethod
-    def add_drone(drone_id, mission_id, operator_id)->(int, dict):
+    def add_drone(drone_id, mission_id, operator_id) -> (int, dict):
         drone = Drone.objects.filter(id=drone_id).first()
         flight = Flight.objects.filter(id=mission_id).first()
         operator = User.objects.filter(id=operator_id).first()
